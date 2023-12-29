@@ -1,4 +1,4 @@
-package src
+package loki
 
 import (
 	"bytes"
@@ -34,6 +34,10 @@ func NewLokiClient(url string) *LokiClient {
 		URL:    url,
 		Client: &http.Client{},
 	}
+}
+
+func InitializeLokiClient(url string) *LokiClient {
+	return NewLokiClient(url)
 }
 
 func (c *LokiClient) SendLog(level, message string) error {

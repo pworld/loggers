@@ -3,19 +3,20 @@
 The loggers package is a comprehensive logging solution for Go applications, providing easy-to-use functionalities for logging messages at different levels and integrating with various logging systems like Loki, Sentry, and Prometheus.
 
 ### Features:
-- Multiple log levels (Info, Debug, Trace, Error, Fatal)
-- Integration with Loki for log aggregation
-- Integration with Sentry for error tracking
-- Prometheus integration for monitoring and metrics
-- Easy setup and configuration through environment variables
+- Multiple log levels: Info, Debug, Warn, Error, and Fatal.
+- Versatile logging functions supporting both simple and detailed messages.
+- Integration with Loki for log aggregation.
+- Integration with Sentry for error tracking.
+- Prometheus integration for monitoring and metrics.
+- Context and structured logging capabilities.
+- Easy setup and configuration through environment variables.
 
 ## Getting Started:
 
 ## Installation:
-To use the loggers package in your Go project, you can install it by running the following command in your project's root directory. This requires that you have Go installed and your workspace is properly set up with Go modules. The loggers package should be hosted on GitHub or a similar platform for this method to work.
+Install the loggers package in your Go project using:
 ```bash
 go get github.com/pworld/loggers
-
 ```
 
 ## Configuration:
@@ -67,26 +68,24 @@ package main
 import "github.com/pworld/loggers"
 
 func main() {
-	// Info level log
-	loggers.InfoLog("Application started", "main", "/", 200)
+  logger := loggers.NewLogger()
 
-	// Debug level log
-	loggers.DebugLog("Debugging data loaded", "main", "/debug", 200)
+  // Simple info log
+  logger.Info("Application started")
 
-	// Error level log
-	if err := someFunction(); err != nil {
-		loggers.ErrorLog(err.Error(), "someFunction", "/errorPath", 500)
-	}
+  // Detailed debug log
+  logger.Debug("Debugging data loaded", "main", "/debug", 200)
 
-	// ... add more logs as needed
+  // Error log with structured data
+  if err := someFunction(); err != nil {
+    logger.Error("Error encountered", "someFunction", "/errorPath", 500, err)
+  }
 }
 
 func someFunction() error {
-	// Example function that may return an error
-	return nil
+  // Example function
+  return nil
 }
-
-
 ````
 ## API Reference
 The loggers package provides various functions to log messages at different levels. Here is a brief overview of some key functions:
