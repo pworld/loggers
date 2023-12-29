@@ -17,6 +17,9 @@ type Logger struct {
 	isSentryActive bool
 }
 
+// Fields type for structured logging
+type Fields map[string]interface{}
+
 func NewLogger() *Logger {
 	return &Logger{
 		StandardLogger: log.New(os.Stdout, "", 0),
