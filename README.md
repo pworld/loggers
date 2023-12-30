@@ -105,6 +105,29 @@ Used for logging error-level messages, typically when an error occurs.
 - Other functions 
 Similar to the above, but for different log levels like Trace, Fatal, etc.
 
+## Package Level Logger:
+This code include a package-level default logger, allowing direct access to the Info method (and other logging methods) without needing to create a new Logger instance each time.
+
+### Sample Code
+```go
+package main
+
+import "github.com/pworld/loggers"
+
+func main() {
+    // Directly use the Info method from the loggers package
+    loggers.Info("This is an info message")
+
+    // You can also pass additional arguments if your Info method supports them
+    loggers.Info("This is an info message with additional context", "more data", 123)
+}
+
+```
+There can be potential conflicts or unintended behavior if you mix direct calls to package-level logging functions (like loggers.Info(...)) with calls made through an instance of the Logger struct (like logger.Info(...) from logger := loggers.NewLogger()). 
+These conflicts or issues generally arise from differences in the state or configuration of the loggers.
+
+To avoid these issues, it's generally a good practice to choose one logging approach and stick with it consistently throughout your application. If you decide to use a package-level logger, ensure that all parts of your application use this global logger. 
+If you prefer creating individual logger instances, avoid using the package-level functions and ensure that each part of your application either receives its own logger instance or uses a shared instance that is passed around appropriately
 ## Contributing:
 Contributions to the loggers package are welcome. If you're interested in contributing, you can follow these steps:
 

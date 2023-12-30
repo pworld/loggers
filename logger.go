@@ -20,6 +20,13 @@ type Logger struct {
 // Fields type for structured logging
 type Fields map[string]interface{}
 
+// defaultLogger is a package-level Logger instance
+var defaultLogger *Logger
+
+func init() {
+	defaultLogger = NewLogger()
+}
+
 func NewLogger() *Logger {
 	return &Logger{
 		StandardLogger: log.New(os.Stdout, "", 0),
@@ -27,6 +34,27 @@ func NewLogger() *Logger {
 		isLokiActive:   os.Getenv("LOKI_ACTIVE") == "1",
 		isSentryActive: os.Getenv("SENTRY_ACTIVE") == "1",
 	}
+}
+
+// Package-level logging functions
+func Info(args ...interface{}) {
+	defaultLogger.Info(args...)
+}
+
+func Error(args ...interface{}) {
+	defaultLogger.Error(args...)
+}
+
+func Fatal(args ...interface{}) {
+	defaultLogger.Fatal(args...)
+}
+
+func Warn(args ...interface{}) {
+	defaultLogger.Warn(args...)
+}
+
+func Debug(args ...interface{}) {
+	defaultLogger.Debug(args...)
 }
 
 // genericLog handles the core logging logic for any log level
