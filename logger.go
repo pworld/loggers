@@ -61,18 +61,20 @@ func Debug(args ...interface{}) {
 func (l *Logger) genericLog(level string, args ...interface{}) {
 	var message string
 
+	// Determine the message based on the number of arguments
 	switch len(args) {
 	case 1:
+		// If there's only one argument, treat it as a simple message
 		message = l.simpleMessage(level, args[0])
 	case 2, 3, 4:
+		// If there are 2-4 arguments, treat it as a detailed message
 		message = l.detailedMessage(level, args...)
 	default:
+		// If there are no arguments or more than 4, it's considered invalid
 		message = fmt.Sprintf("%s: Invalid logging arguments", level)
 	}
 
-	l.StandardLogger.Println(message)
-
-	// Additional logic for Sentry and Loki
+	// Log the message and send to external systems (if active)
 	l.logAndSend(message, sentry.LevelFatal, "fatal")
 }
 
@@ -153,7 +155,7 @@ func formatLogMessage(logType, description, method, path string, status int) str
 }
 
 func (l *Logger) logAndSend(message string, sentryLevel sentry.Level, lokiLevel string) {
-	l.StandardLogger.Println(message)
+	l.StandardLogger.Println(message) // Duplicate logging
 	l.sendToSentry(sentryLevel, message)
 	l.sendToLoki(lokiLevel, message)
 }
